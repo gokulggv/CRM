@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infolexus Dashboard</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  
+
+
+
+
+  <style>
+    body {
+      background-color:#C6FFD8;
+    }
+    .card-custom {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .sidebar {
+      width: 80px;
+      min-height: 100vh;
+      background: #90AEAD;
+      border-right: 1px solid #e5e7eb;
+      
+      
+    }
+    .sidebar .btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      margin: 10px auto;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      background:#90AEAD;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+     
+    }
+    .notification-button{
+    width: 40px; /* Set the same width and height */
+    height: 40px; /* Set the same width and height */
+     border-radius: 50%; /* Makes it circular */
+    color: rgb(18, 2, 2);
+    border: none;
+    cursor: pointer;
+    }
+     .profile-btn {
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .profile-btn img {
+    display: flex;
+    width: 44px;
+    height: 44px;
+  }
+  .profile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  } 
+    /*font-family: Arial, sans-serif;
+      margin: 40px; */
+}
+
+    .profile-container {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .profile-container img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+    .profile-container img:hover {
+      transform: scale(1.05);
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: none;
+      min-width: 160px;
+      z-index: 10;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+    }
+    .dropdown-menu a:hover {
+      background: #f2f2f2;
+    }
+
+    /* message button color*/
+     /* .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .notification-button {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+    } */
+
+    /* .notification-dot {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        border-radius: 50%;
+        display: none; /* hidden by default
+} */
+
+
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- Sidebar -->
+       <!-- Sidebar -->
+     <aside class="sidebar d-flex flex-column align-items-center p-3" style="width:70px; height:100vh; background:#f8f9fa;">
+  <!-- Dashboard -->
+  <button class="btn mb-3 position-relative rounded-circle bg-white shadow-sm" ;><i class="bi bi-grid fs text-black" title="Dashboard"></i></button>
+
+  <!-- Calendar -->
+  <button class="btn mb-3 position-relative rounded-circle bg-white shadow-sm"><i class="bi bi-calendar3" title="Calendar"></i></button>
+
+  <!-- Chart -->
+  <button class="btn mb-3 position-relative rounded-circle bg-white shadow-sm"><i class="bi bi-bar-chart" title="Charts"></i></button>
+
+  <!-- Profile -->
+  <button class="btn mb-3 position-relative rounded-circle bg-white shadow-sm"><i class="bi bi-person-circle" title="Profile"></i></button>
+
+  <div class="mt-auto d-flex flex-column align-items-center">
+    <!-- Settings -->
+    <button class="btn mb-3 position-relative rounded-circle bg-white shadow-sm"><i class="bi bi-gear" title="Settings"></i></button>
+
+    <!-- Help -->
+    <button class="btn mb-3position-relative rounded-circle bg-white shadow-sm"><i class="bi bi-question-circle" title="Help"></i></button>
+    <div class="mt-auto">
+         <div class="profile-container" id="profileBtn" width="">
+    <img src="download (2).jpg" alt="user" style="border-radius:30PX;">
+    <div class="dropdown-menu" id="profileMenu">
+      <a href="profile.html"><i class="bi bi-person-circle"></i> Profile</a>
+      <a href="#"><i class="bi bi-gear"></i> Settings</a>
+      <a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </div>
+  </div>
+        
+  </div>
+</aside>
+    
+
+
+    
+       
+    
+
+    <!-- Main -->
+    <main class="flex-grow-1 p-4">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold">HELLO, INFOLEXUS SOLUTIONS</h2>
+          <p class="text-muted small">Explore information and activity about your property</p>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="input-group rounded-pill shadow-sm" style="width: 300px;">
+            <span class="input-group-text bg-white border-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-0" placeholder="Search Anything...">
+          </div>
+          <button class="btn position-relative rounded-circle bg-white shadow-sm">
+            <i class="bi bi-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">2</span>
+          </button>
+
+          <!--Message button-->
+          <div class="button-container">
+    <button class="notification-button" id="notifyBtn">
+  <i class="bi bi-chat"></i>
+      
+      <span class="notification-dot" id="dot"></span>
+    </button>
+  </div>
+
+  <script>
+    const notifyBtn = document.getElementById("notifyBtn");
+    const dot = document.getElementById("dot");
+
+    let hasNotification = false;
+
+    // Toggle dot when button clicked
+    notifyBtn.addEventListener("click", () => {
+      hasNotification = !hasNotification;
+      dot.style.display = hasNotification ? "block" : "none";
+    });
+
+    // Example: automatically add a notification after 3s
+    setTimeout(() => {
+      hasNotification = true;
+      dot.style.display = "block";
+    }, 3000);
+  </script>
+        
+          
+         
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="card-custom p-3">
+            <div class="icon-box income-icon">
+                <i class="bit bi-cash-stack"></i>
+            </div>
+            <h6>Incomes</h6>
+            <h2 class="fw-bold">1.500</h2>
+            <p class="text-success small"       >▲ 20% Last month total 1.050</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom p-3">
+            <div class="icon-box expenses-icon">
+                <i class="bi bi-wallet2"></i>
+            </div>
+            <h6>Expense</h6>
+            <h2 class="fw-bold">320</h2>
+            <p class="text-danger small">▼ 20% Last month total 950</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom p-3">
+            <div class="icon-box sales-icon">
+                <i class="bi bi-bar-chart-line"></i>
+            </div>
+            <h6>Total Sales</h6>
+            <h2 class="fw-bold">$150k</h2>
+            <p class="text-success small">▲ 20% Last month total 1.500</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="row g-3 mb-4">
+        <div class="col-xl-8">
+          <div class="card-custom p-3">
+            <h6>Report Incomes</h6>
+            <canvas id="incomesBar" height="120"></canvas>
+          </div>
+        </div>
+        <div class="col-xl-4">
+          <div class="card-custom p-3 text-center">
+            <h6 class="d-flex justify-content-between">
+              <span>Cost Breakdown</span>
+              <a href="#" class="small text-muted">See Details</a>
+            </h6>
+            <div class="position-relative d-flex justify-content-center align-items-center" style="height:220px;">
+              <canvas id="costDonut"></canvas>
+              <div class="position-absolute">
+                <p class="small text-muted">Total</p>
+                <h4 class="fw-bold">$4,750</h4>
+              </div>
+            </div>
+            <div class="row text-start small mt-2" style="padding: 20px;">
+              <div class="col-6"><span class="badge bg-primary">&nbsp;</span> Maintenance</div>
+              <div class="col-6"><span class="badge bg-warning">&nbsp;</span> Repair</div>
+              <div class="col-6"><span class="badge bg-danger">&nbsp;</span> Taxes</div>
+              <div class="col-6"><span class="badge bg-success">&nbsp;</span> Saving</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lists -->
+      <div class="row g-3">
+        <div class="col-xl-6">
+          <div class="card-custom p-3">
+            <h6 class="d-flex justify-content-between">
+              <span>Last Transactions</span>
+              <a href="#" class="small text-muted">See All</a>
+            </h6>
+            <ul class="list-unstyled mt-3">
+              <li class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                  <img src="https://i.pravatar.cc/56?u=maple" class="rounded me-3" alt="">
+                  <div>
+                    <p class="mb-0 small fw-bold">123 Maple Avenue Springfield</p>
+                    <small class="text-muted">12 Sep 2024, 9:29</small>
+                  </div>
+                </div>
+                <span class="fw-bold text-success">$30K</span>
+              </li>
+              <li class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                  <img src="https://i.pravatar.cc/56?u=villa" class="rounded me-3" alt="">
+                  <div>
+                    <p class="mb-0 small fw-bold">Booking 987 Villa Street</p>
+                    <small class="text-muted">10 Sep 2024, 9:29</small>
+                  </div>
+                </div>
+                <span class="fw-bold text-success">$10K</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card-custom p-3">
+            <h6 class="d-flex justify-content-between">
+             <!-- Small image -->
+          <span>Request Leave</span>
+              <a href="#" class="small text-muted">See All</a>
+            </h6>
+            <ul class="list-unstyled mt-3">
+              <li class="d-flex justify-content-between align-items-center mb-3" style="padding: 10px;">
+                <div class="d-flex align-items-center">
+                  <img src="download (2).jpg" class="rounded me-3" alt="" height="40" width="40">
+                  <div>
+                    <p class="mb-0 small fw-bold">123 Maple Avenue Springfield</p>
+                    <small class="text-muted">Request ID: MR-001</small>
+                  </div>
+                </div>
+                <span class="text-muted">Broken Grabage - Jacob</span>
+              </li>
+              <li class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                  <img src="download (2).jpg" class="rounded me-3" alt="" height="40" width="40">
+                  <div>
+                    <p class="mb-0 small fw-bold">Booking 987 Villa Street</p>
+                    <small class="text-muted">Request ID: MR-002</small>
+                  </div>
+                </div>
+                <span class="text-muted">No Heat Bathroom - Albert</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chart JS Scripts -->
+  <script>
+    // Bar chart
+    new Chart(document.getElementById('incomesBar'), {
+      type: 'bar',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+          label: 'Incomes',
+          data: [2500, 3000, 3200, 4090, 2700, 2400, 2600],
+          backgroundColor: function(ctx) {
+            return ctx.chart.data.labels[ctx.dataIndex] === 'Thu' ? '#7C7BFE' : 'rgba(124,123,254,0.35)';
+          },
+          borderRadius: 10
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { callback: v => '$' + v } }
+        }
+      }
+    });
+
+    // Donut chart
+    new Chart(document.getElementById('costDonut'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Maintenance','Repair','Taxes','Saving'],
+        datasets: [{
+          data: [1600, 900, 900, 1350],
+          backgroundColor: ['#6C63FF','#F59E0B','#EF4444','#10B981'],
+          borderWidth: 0
+        }]
+      },
+      options: { cutout: '70%', plugins: { legend: { display: false } } }
+    });
+
+    const profileBtn = document.getElementById("profileBtn");
+    const profileMenu = document.getElementById("profileMenu");
+
+    profileBtn.addEventListener("click", () => {
+      profileMenu.style.display =
+        profileMenu.style.display === "block" ? "none" : "block";
+    });
+
+    // close menu if clicked outside
+    document.addEventListener("click", (e) => {
+  if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+    profileMenu.style.display = "none";
+  }
+});
+
+  </script>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</body>
+</html>
